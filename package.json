@@ -44,7 +44,9 @@
 	"dependencies": {
 		"@lucia-auth/adapter-prisma": "^3.0.2",
 		"@prisma/client": "^5.6.0",
+		"bits-ui": "^0.9.9",
 		"clsx": "^2.0.0",
+		"formsnap": "^0.4.1",
 		"lucia": "^2.7.4",
 		"lucide-svelte": "^0.294.0",
 		"tailwind-merge": "^2.1.0",
