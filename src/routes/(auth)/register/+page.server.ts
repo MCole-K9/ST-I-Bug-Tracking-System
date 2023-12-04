@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms/server';
 import { registerSchema } from './schema';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$server/lucia';
 
 export const load = (async () => {
@@ -41,14 +41,8 @@ export const actions: Actions = {
         })
 
         
-        const session = await auth.createSession({
-            userId: user.userId,
-            attributes: {}
-        });
-
-       
-        locals.auth.setSession(session)
-        // Yep, return { form } here too
-        return { form };
+        
+        // Redirect to the login page
+        throw redirect(301, "/login")
     }
 };
