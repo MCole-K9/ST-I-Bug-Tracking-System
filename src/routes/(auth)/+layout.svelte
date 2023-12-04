@@ -5,7 +5,6 @@
 
 
 	$: isLogin = $page.url.pathname === "/login";
-	$: console.log($page.url.pathname);
 	
 </script>
 
