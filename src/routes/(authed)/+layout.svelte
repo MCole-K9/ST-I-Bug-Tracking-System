@@ -17,7 +17,7 @@
       <span>Bug Tracker</span>
     </a>
     <nav class=" md:flex gap-6">
-      <a class="" href="/">
+      <a class="" href="/dashboard">
         Dashboard
       </a>
       <a class="" href="/projects">
