@@ -1,5 +1,43 @@
-import type { PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms/server';
+import type { Actions, PageServerLoad } from './$types';
+import { createProjectSchema } from './schema';
+import { fail } from '@sveltejs/kit';
+import prisma from "$server/prisma";
 
 export const load = (async () => {
-    return {};
+    return {
+        form: superValidate(createProjectSchema)
+    };
 }) satisfies PageServerLoad;
+
+
+
+export const actions: Actions = {
+    createProject : async ({request, locals}) => {
+        console.log("createProject");
+        
+        const form = await superValidate(request, createProjectSchema);
+
+        console.log(form);
+        
+
+        if(form.valid) {
+            // do something with form.data
+            await prisma.project.create({
+                data: {
+                    name: form.data.name,
+                    description: form.data.description,
+                    users: {
+                        connect: {
+                            id: (await locals.auth.validate())?.user.userId
+                        }
+                    }
+                }
+            })
+            
+        }else{
+            // do something with form.errors
+            return fail(400, {form})
+        }
+    }
+};
