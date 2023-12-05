@@ -16,6 +16,9 @@ model User {
   first_name   String   @db.VarChar(50)
   last_name    String   @db.VarChar(50)
   email        String    @unique @db.VarChar(50)
+  bugs         Bug[]
+  bug_histories BugHistory[]
+  projects     Project[]
   auth_session Session[]
   key          Key[]
 }
@@ -37,4 +40,71 @@ model Key {
   user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+
+
+model Project {
+  id          String   @id @unique
+  name        String   @db.VarChar(50)
+  description String   @db.VarChar(50)
+  users      User[]
+  bugs       Bug[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  
+}
+
+
+model Bug {
+  id          String   @id @unique
+  name        String   @db.VarChar(50)
+  description String   @db.VarChar(50)
+  project_id  String
+  project     Project  @relation(references: [id], fields: [project_id], onDelete: Cascade)
+  user_id     String
+  user        User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  status      BugStatus @default(OPEN)
+  priority    BugPriority  @default(TBD)
+  severity    BugSeverity @default(TBD)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  history     BugHistory[]
+  // comments    Comment[]
+  // attachments Attachment[]
+}
+
+enum BugStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum BugPriority {
+  TBD
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum BugSeverity {
+  TBD
+  BLOCKER
+  CRITICAL
+  MAJOR
+  MINOR
+  LOW
+}
+
+model BugHistory {
+  id          String   @id @unique
+  bug_id      String
+  bug         Bug      @relation(references: [id], fields: [bug_id], onDelete: Cascade)
+  user_id     String
+  user        User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  status      BugStatus
+  priority    BugPriority
+  severity    BugSeverity
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
