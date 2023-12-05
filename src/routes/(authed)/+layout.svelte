@@ -11,7 +11,7 @@
 
 
 
-<div class="flex items-center justify-between h-16 px-4 bg-gray-800">
+<div class="flex items-center justify-between h-16 px-4">
     <a class="flex items-center gap-2 text-lg font-semibold" href="#">
      <Bug class="w-6 h6" />
       <span>Bug Tracker</span>
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-<Separator class="h-2" />
+<Separator class="" />
 
 <section class="px-4">
     <slot />
