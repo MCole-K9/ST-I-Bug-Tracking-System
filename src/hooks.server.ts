@@ -9,7 +9,7 @@ export const handle: Handle = async ({ event, resolve  }) => {
 
 	if (session) {
 
-		if(event.url.pathname === '/login' || event.url.pathname === '/register'){
+		if(event.url.pathname === '/login' || event.url.pathname === '/register' || event.url.pathname === '/'){
 			throw redirect(301, '/dashboard')
 		}
 		
