@@ -85,4 +85,8 @@
     </div>
   </div>
 
-<slot />
+
+<section class="px-4">
+    <slot />
+</section>
+
