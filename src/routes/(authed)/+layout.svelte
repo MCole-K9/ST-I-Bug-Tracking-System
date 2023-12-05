@@ -15,40 +15,29 @@
         </div>
 
         
-	<div class="flex h-16 items-center px-4">
 		<nav class="flex items-center space-x-4 lg:space-x-10">
 			<a
-				href="/examples/dashboard"
+				href="/dashboard"
 				class="text-sm font-medium transition-colors hover:text-primary"
 			>
 				Dashboard
 			</a>
 
 			<a
-				href="/examples/dashboard"
+				href="/projects"
 				class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 			>
 				Projects
 			</a>
 			<a
-				href="/examples/dashboard"
+				href="/bugs"
 				class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
 			>
 				Bugs
 			</a>
-			<a
-				href="/examples/dashboard"
-				class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-			>
-				Settings
-			</a>
 		</nav>
+	
 
-		<!-- <div class="ml-auto flex items-center space-x-4">
-        <Search />
-        <UserNav />
-    </div> -->
-	</div>
 
     </header>
 </div>
