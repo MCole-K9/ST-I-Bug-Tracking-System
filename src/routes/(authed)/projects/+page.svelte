@@ -6,13 +6,15 @@
 	import { cn } from '$utils';
 	import * as Form from '$ui/form';
 	import { createProjectSchema } from './schema';
-	import { superForm } from 'sveltekit-superforms/client';
 	import * as Card from "$lib/components/ui/card";
 	import {Bug, FolderGit, Calendar} from "lucide-svelte"
 	import { invalidate } from '$app/navigation';
 	import type { FormOptions } from 'formsnap';
 
 	export let data: PageData;
+
+	let sheetOpen: boolean = false;
+
 
 	const formOptions: FormOptions<typeof createProjectSchema> =  {
 		onSubmit: () => {
@@ -21,6 +23,7 @@
 		onResult({result}) {
 			if(result.type === "success"){
 				invalidate("reload:projects")
+				sheetOpen = false;
 			}
 			
 		},
@@ -32,7 +35,7 @@
 		<Input placeholder="Search" />
 	</form>
 
-	<Sheet.Root>
+	<Sheet.Root bind:open={sheetOpen}>
 		<Sheet.Trigger asChild let:builder>
 			<Button builders={[builder]} variant="default">Create Project</Button>
 		</Sheet.Trigger>
@@ -60,10 +63,8 @@
 						<Form.Validation />
 					</Form.Item>
 				</Form.Field>
-				<Sheet.Close asChild let:builder>
-					<Button builders={[builder]} type="submit">Submit</Button>
-				  </Sheet.Close>
-				<!-- <Form.Button type="submit">Submit</Form.Button> -->
+				
+				<Form.Button type="submit" >Submit</Form.Button>
 			</Form.Root>
 		</Sheet.Content>
 	</Sheet.Root>
