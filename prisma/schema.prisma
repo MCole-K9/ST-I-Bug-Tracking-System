@@ -45,7 +45,7 @@ model Key {
 
 
 model Project {
-  id          String   @id @default(uuid())
+  id          String   @id  @default(uuid())
   name        String   @db.VarChar(50)
   description String   @db.VarChar(50)
   users      User[]
@@ -57,12 +57,12 @@ model Project {
 
 
 model Bug {
-  id          String   @id @default(uuid())
+  id          String   @id  @default(uuid())
   name        String   @db.VarChar(50)
   description String   @db.VarChar(50)
-  project_id  String
+  project_id  String   
   project     Project  @relation(references: [id], fields: [project_id], onDelete: Cascade)
-  user_id     String
+  user_id     String   
   user        User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
   status      BugStatus @default(OPEN)
   priority    BugPriority  @default(TBD)
@@ -98,9 +98,9 @@ enum BugSeverity {
 
 model BugHistory {
   id          String   @id @default(uuid())
-  bug_id      String
+  bug_id      String  
   bug         Bug      @relation(references: [id], fields: [bug_id], onDelete: Cascade)
-  user_id     String
+  user_id     String   
   user        User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
   status      BugStatus
   priority    BugPriority
