@@ -7,9 +7,10 @@
 	import * as Form from '$ui/form';
 	import { createProjectSchema } from './schema';
 	import * as Card from "$lib/components/ui/card";
-	import {Bug, FolderGit, Calendar} from "lucide-svelte"
+	import {Bug, Calendar, MoreHorizontal} from "lucide-svelte"
 	import { invalidate } from '$app/navigation';
 	import type { FormOptions } from 'formsnap';
+	import * as DropdownMenu from "$ui/dropdown-menu";
 
 	export let data: PageData;
 
@@ -78,8 +79,28 @@
 	{#each data.projects as project (project.id)}
 		<Card.Root>
 			<Card.Header>
-			  <Card.Title>{project.name}</Card.Title>
-			  <Card.Description>{project.description}</Card.Description>
+
+				<Card.Title class="flex justify-between items-center">
+					{project.name}
+					
+
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger  >
+								<MoreHorizontal class="w-4 h-4" />
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content>
+							  <DropdownMenu.Group>
+								<DropdownMenu.Label>Project Actions</DropdownMenu.Label>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Item >Edit</DropdownMenu.Item>
+								<DropdownMenu.Item href="/bugs?project={project.id}&create=true">Create Bug</DropdownMenu.Item>
+							  </DropdownMenu.Group>
+							</DropdownMenu.Content>
+						  </DropdownMenu.Root>
+						
+				
+				</Card.Title>
+			  	<Card.Description>{project.description}</Card.Description>
 			</Card.Header>
 			<Card.Footer>
 				<div class="flex items-center gap-4 text-sm">

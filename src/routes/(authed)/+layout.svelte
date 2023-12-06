@@ -12,10 +12,10 @@
 
 
 <div class="flex items-center justify-between h-16 px-4">
-    <a class="flex items-center gap-2 text-lg font-semibold" href="#">
+    <div class="flex items-center gap-2 text-lg font-semibold">
      <Bug class="w-6 h6" />
       <span>Bug Tracker</span>
-    </a>
+    </div>
     <nav class=" md:flex gap-6">
       <a class="" href="/dashboard">
         Dashboard
@@ -23,7 +23,7 @@
       <a class="" href="/projects">
         Projects
       </a>
-      <a class="" href="/">
+      <a class="" href="/bugs">
         Bugs
       </a>
       
