@@ -14,6 +14,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { BugPriority, BugSeverity, BugStatus } from '@prisma/client';
+    import * as Table from "$ui/table";
 
     export let data: PageData;
 
@@ -34,10 +35,9 @@
 			if(result.type === "success"){
 				invalidate("reload:bugs")
 				sheetOpen = false;
+                
 			}
 
-            console.log(result);
-            
 			
 		},
 	};
@@ -57,9 +57,9 @@
 	</form>
 
 	<Sheet.Root bind:open={sheetOpen} >
-		<Sheet.Trigger asChild let:builder>
+		<!-- <Sheet.Trigger asChild let:builder>
 			<Button builders={[builder]} variant="default">Create Bug</Button>
-		</Sheet.Trigger>
+		</Sheet.Trigger> -->
 		<Sheet.Content side="right" class="overflow-auto">
 			<Sheet.Header>
 				<Sheet.Title>Create Bug</Sheet.Title>
@@ -159,3 +159,32 @@
 		</Sheet.Content>
 	</Sheet.Root>
 </div>
+
+
+
+<Table.Root>
+    <Table.Caption>A list of recent bugs.</Table.Caption>
+    <Table.Header>
+      <Table.Row>
+        <Table.Head class="w-[100px]">Name</Table.Head>
+        <Table.Head>Desciption</Table.Head>
+        <Table.Head>Project</Table.Head>
+        <Table.Head >Status</Table.Head>
+        <Table.Head >Priority</Table.Head>
+        <Table.Head >Severity</Table.Head>
+      </Table.Row>
+    </Table.Header>
+    <Table.Body>
+        {#each data.bugs as bug}
+            <Table.Row>
+                <Table.Cell class="font-medium">{bug.name}</Table.Cell>
+                <Table.Cell>{bug.description}</Table.Cell>
+                <Table.Cell>{bug.project.name}</Table.Cell>
+                <Table.Cell >{bug.status}</Table.Cell>
+                <Table.Cell >{bug.priority}</Table.Cell>
+                <Table.Cell >{bug.severity}</Table.Cell>
+          </Table.Row>
+        {/each}
+      
+    </Table.Body>
+  </Table.Root>

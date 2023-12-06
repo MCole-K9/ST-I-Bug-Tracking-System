@@ -8,7 +8,30 @@ export const load = (async ({url, locals}) => {
 
 
     let project_id = url.searchParams.get("project");
+
+    let options = {}
+
+    if(project_id){
+        options = {
+            where: {
+                project_id: project_id
+            }
+        }
+    }
+
+    let bugs = await prisma.bug.findMany({
+        include: {
+            project: {
+                select: {
+                    name: true
+                }   
+            },
+            user: true
+        },
+        ...options
+    })
     return {
+        bugs,
         form: superValidate({project_id: project_id ?? "", user_id: (await locals.auth.validate())?.user.userId }, createBugSchema )
     };
 }) satisfies PageServerLoad;
