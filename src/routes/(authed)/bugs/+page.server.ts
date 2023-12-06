@@ -28,25 +28,7 @@ export const actions: Actions = {
         if(form.valid) {
             // do something with form.data
             await prisma.bug.create({
-                data: {
-                    name: form.data.name,
-                    description: form.data.description,
-                    status: form.data.status,
-                    priority: form.data.priority,
-                    severity: form.data.severity,
-                    project: {
-                        connect: {
-                            id: form.data.project_id
-                        }
-                    },
-                    user: {
-                        connect: {
-                            id: form.data.user_id
-                        }
-                    },
-                   
-                    
-                }
+                data: form.data
             })
         }else{
             // do something with form.errors
