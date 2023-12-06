@@ -28,12 +28,8 @@ export const load = (async ({depends}) => {
 
 export const actions: Actions = {
     createProject : async ({request, locals}) => {
-        console.log("createProject");
-        
-        const form = await superValidate(request, createProjectSchema);
 
-        console.log(form);
-        
+        const form = await superValidate(request, createProjectSchema);
 
         if(form.valid) {
             // do something with form.data
