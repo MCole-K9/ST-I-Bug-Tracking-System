@@ -8,7 +8,7 @@
 	import { createProjectSchema } from './schema';
 	import { superForm } from 'sveltekit-superforms/client';
 	import * as Card from "$lib/components/ui/card";
-	import {FolderGit} from "lucide-svelte"
+	import {Bug, FolderGit, Calendar} from "lucide-svelte"
 	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
@@ -76,11 +76,17 @@
 			  <Card.Title>{project.name}</Card.Title>
 			  <Card.Description>{project.description}</Card.Description>
 			</Card.Header>
-			<Card.Content>
-			  <p>Card Content</p>
-			</Card.Content>
 			<Card.Footer>
-			  <p>Card Footer</p>
+				<div class="flex items-center gap-4 text-sm">
+					<div class="flex items-center gap-1">
+					  <Calendar class="w-4 h-4" />
+					  <span class="text-gray-500 dark:text-gray-400">2h ago</span>
+					</div>
+					<div class="flex items-center gap-1">
+					  <Bug class="w-4 h-4" />
+					  <span class="text-gray-500 dark:text-gray-400">{project._count.bugs}</span>
+					</div>
+				  </div>
 			</Card.Footer>
 		  </Card.Root>
 		
@@ -93,5 +99,3 @@
 	{/each}
 
 </div>
-
-

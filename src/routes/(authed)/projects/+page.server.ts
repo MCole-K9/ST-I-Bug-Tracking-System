@@ -7,8 +7,16 @@ import prisma from "$server/prisma";
 export const load = (async ({depends}) => {
 
     depends("reload:projects")
-    
-    const projects = await prisma.project.findMany()
+
+    const projects = await prisma.project.findMany({
+        include: {
+            _count: {
+                select: {
+                    bugs: true
+                }
+            }
+        }
+    })
 
     return {
         projects,
