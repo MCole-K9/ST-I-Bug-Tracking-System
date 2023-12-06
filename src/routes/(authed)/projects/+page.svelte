@@ -10,10 +10,11 @@
 	import * as Card from "$lib/components/ui/card";
 	import {Bug, FolderGit, Calendar} from "lucide-svelte"
 	import { invalidate } from '$app/navigation';
+	import type { FormOptions } from 'formsnap';
 
 	export let data: PageData;
 
-	const form = superForm(data.form, {
+	const formOptions: FormOptions<typeof createProjectSchema> =  {
 		onSubmit: () => {
 			console.log('submit');
 		},
@@ -23,7 +24,7 @@
 			}
 			
 		},
-	});
+	};
 </script>
 
 <div class="max-w-6xl w-full mx-auto my-3 flex justify-center items-center gap-4">
@@ -42,7 +43,7 @@
 					Create a project. This where you will be able to track bugs
 				</Sheet.Description>
 			</Sheet.Header>
-			<Form.Root method="POST" action="?/createProject" {form} controlled schema={createProjectSchema} let:config>
+			<Form.Root method="POST" action="?/createProject" form={data.form} schema={createProjectSchema} options={formOptions} let:config>
 				<Form.Field {config} name="name">
 					<Form.Item>
 						<Form.Label>Name</Form.Label>
@@ -59,7 +60,10 @@
 						<Form.Validation />
 					</Form.Item>
 				</Form.Field>
-				<Form.Button type="submit">Submit</Form.Button>
+				<Sheet.Close asChild let:builder>
+					<Button builders={[builder]} type="submit">Submit</Button>
+				  </Sheet.Close>
+				<!-- <Form.Button type="submit">Submit</Form.Button> -->
 			</Form.Root>
 		</Sheet.Content>
 	</Sheet.Root>
