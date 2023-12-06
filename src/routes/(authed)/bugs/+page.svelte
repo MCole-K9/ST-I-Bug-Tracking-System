@@ -69,12 +69,18 @@
 			</Sheet.Header>
 			<Form.Root method="POST" action="?/createBug" form={data.form} schema={createBugSchema} options={formOptions} let:config debug>
 
-                <!-- <Form.Field {config} name="project_id">
+                <Form.Field {config} name="project_id">
 					<Form.Item>
-						<Form.Input type="hidden" bind:value={project}/>
+						<Form.Input type="hidden"/>
 						<Form.Validation  />
 					</Form.Item>
-				</Form.Field> -->
+				</Form.Field>
+                <Form.Field {config} name="user_id">
+					<Form.Item>
+						<Form.Input type="hidden"/>
+						<Form.Validation  />
+					</Form.Item>
+				</Form.Field>
 				<Form.Field {config} name="name">
 					<Form.Item>
 						<Form.Label>Name</Form.Label>

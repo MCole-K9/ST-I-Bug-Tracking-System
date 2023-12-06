@@ -25,6 +25,9 @@ export const actions: Actions = {
         
         const form = await superValidate(request, createBugSchema);
 
+        console.log(form.data);
+        
+
         if(form.valid) {
             // do something with form.data
             await prisma.bug.create({
