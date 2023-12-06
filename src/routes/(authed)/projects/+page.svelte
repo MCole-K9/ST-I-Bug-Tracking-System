@@ -7,13 +7,22 @@
 	import * as Form from '$ui/form';
 	import { createProjectSchema } from './schema';
 	import { superForm } from 'sveltekit-superforms/client';
+	import * as Card from "$lib/components/ui/card";
+	import {FolderGit} from "lucide-svelte"
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		onSubmit: () => {
 			console.log('submit');
-		}
+		},
+		onResult({result}) {
+			if(result.type === "success"){
+				invalidate("reload:projects")
+			}
+			
+		},
 	});
 </script>
 
@@ -56,7 +65,33 @@
 	</Sheet.Root>
 </div>
 
-<div class={cn('h-screen w-screen flex justify-center items-center')}>
-	<h1 class=" text-2xl">No Projects</h1>
+
+
+
+
+<div class="p-5 grid grid-cols-4 gap-4">
+	{#each data.projects as project (project.id)}
+		<Card.Root>
+			<Card.Header>
+			  <Card.Title>{project.name}</Card.Title>
+			  <Card.Description>{project.description}</Card.Description>
+			</Card.Header>
+			<Card.Content>
+			  <p>Card Content</p>
+			</Card.Content>
+			<Card.Footer>
+			  <p>Card Footer</p>
+			</Card.Footer>
+		  </Card.Root>
+		
+	
+	 
+	{:else}
+		<div class={cn('h-screen w-screen flex justify-center items-center col-span-full')}>
+			<h1 class=" text-2xl">No Projects</h1>
+		</div>
+	{/each}
+
 </div>
+
 

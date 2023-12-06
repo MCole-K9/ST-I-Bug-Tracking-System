@@ -4,8 +4,14 @@ import { createProjectSchema } from './schema';
 import { fail } from '@sveltejs/kit';
 import prisma from "$server/prisma";
 
-export const load = (async () => {
+export const load = (async ({depends}) => {
+
+    depends("reload:projects")
+    
+    const projects = await prisma.project.findMany()
+
     return {
+        projects,
         form: superValidate(createProjectSchema)
     };
 }) satisfies PageServerLoad;
