@@ -34,8 +34,12 @@
 		},
 		onResult({result}) {
 			if(result.type === "success"){
-				invalidate("reload:bugs")
-				sheetOpen = false;
+
+                $page.url.searchParams.delete("create")
+                $page.url.searchParams.delete("project")
+
+				goto($page.url.toString(), {invalidateAll: true})
+                sheetOpen = false;
                 
 			}
 

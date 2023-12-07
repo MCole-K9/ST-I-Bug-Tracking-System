@@ -9,7 +9,7 @@ import { BugService } from './BugService.server';
 
 export const load = (async ({url, locals, depends}) => {
 
-    depends("reload:bugs")
+    depends(url.toString())
 
     let project_id = url.searchParams.get("project");
     let query = url.searchParams.get("q");
