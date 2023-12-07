@@ -51,7 +51,7 @@ export class BugService {
             ...optionsPrisma,
             
         })
-        return bugs;
+        return bugs as typeof bugs & {project: {name: string}}[] // this is a hack to get the project name;
     
 
     }
