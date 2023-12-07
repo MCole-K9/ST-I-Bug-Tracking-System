@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import * as Form from '$components/ui/form';
 	import type { PageData } from './$types';
 	import { loginSchema } from './schema';
@@ -11,7 +12,7 @@
 	<p class="text-sm text-muted-foreground">Enter your email below to sign in</p>
 </div>
 
-<Form.Root method="POST" form={data.form} schema={loginSchema} let:config debug={true}>
+<Form.Root method="POST" form={data.form} schema={loginSchema} let:config debug={dev}>
 	<Form.Field {config} name="email">
 		<Form.Item>
 			<Form.Label>Email</Form.Label>

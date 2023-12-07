@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import { BugPriority, BugSeverity, BugStatus } from '@prisma/client';
     import * as Table from "$ui/table";
+	import { dev } from '$app/environment';
   
 
     export let data: PageData;
@@ -86,7 +87,7 @@
 					Create a Bug.
 				</Sheet.Description>
 			</Sheet.Header>
-			<Form.Root method="POST" action="?/createBug" form={data.form} schema={createBugSchema} options={formOptions} let:config debug>
+			<Form.Root method="POST" action="?/createBug" form={data.form} schema={createBugSchema} options={formOptions} let:config debug={dev}>
 
                 <Form.Field {config} name="project_id">
 					<Form.Item>

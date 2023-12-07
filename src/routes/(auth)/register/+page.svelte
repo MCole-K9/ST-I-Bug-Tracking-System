@@ -2,6 +2,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import * as Form from '$lib/components/ui/form';
 	import { registerSchema } from './schema';
+	import { dev } from '$app/environment';
 
 	export let data;
 
@@ -13,7 +14,7 @@
 	<p class="text-sm text-muted-foreground">Enter your email below to create your account</p>
 </div>
 
-<Form.Root method="POST" form={data.form} schema={registerSchema} let:config debug={true}>
+<Form.Root method="POST" form={data.form} schema={registerSchema} let:config debug={dev}>
 	<div class="grid md:grid-cols-2">
 		<Form.Field {config} name="first_name">
 			<Form.Item>
