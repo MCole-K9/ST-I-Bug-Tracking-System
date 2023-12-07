@@ -21,6 +21,9 @@ export class BugService {
         }
     
         if(options?.query){
+
+            options.query = options.query.replaceAll(" ", "&")
+            
             
             optionsPrisma.where = {
                 ...optionsPrisma.where,
