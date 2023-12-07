@@ -43,13 +43,13 @@
 		},
 	};  
 
-   let q: string
+   let q: string = ""
 
     function handleSearch(){
-       
-        if(q !== ""){
-            goto(`?q=${q}`, {invalidateAll: true})
-        }
+ 
+      
+        goto(`?q=${q}`, {invalidateAll: true})
+     
     }
     
 
@@ -63,11 +63,13 @@
 </script>
 
 <div class="max-w-6xl w-full mx-auto my-3 flex justify-center items-center gap-4">
-	<form class="flex-1">
-
-    
-		<Input placeholder="Search" bind:value={q}  on:change={handleSearch}/>
-	</form>
+	<div class="flex-1" >
+		<Input placeholder="Search" bind:value={q} on:keydown={(event)=>{
+            if(event.key === "Enter"){
+                handleSearch()
+            } 
+        }}/>
+	</div>
 
 	<Sheet.Root bind:open={sheetOpen} >
 		<!-- <Sheet.Trigger asChild let:builder>
