@@ -4,29 +4,54 @@ import { createBugSchema } from './schema';
 import prisma from '$server/prisma';
 import { fail } from '@sveltejs/kit';
 
-export const load = (async ({url, locals}) => {
+export const load = (async ({url, locals, depends}) => {
 
+    depends("reload:bugs")
 
     let project_id = url.searchParams.get("project");
+    let query = url.searchParams.get("q");
 
-    let options = {}
-
-    if(project_id){
-        options = {
-            where: {
-                project_id: project_id
-            }
+    let options = {
+        where: {
+           
         }
     }
 
+    if(project_id){
+        options.where = {
+            project_id
+        }
+    }
+
+    if(query){
+        
+        options.where = {
+            ...options.where,
+            OR: [
+                {
+                    name: {
+                        search: query
+                    
+                    },
+                    description: {
+                        search: query
+                    }
+    
+    
+                }
+            ] 
+        }
+    }
+
+    console.log(options);
+    
     let bugs = await prisma.bug.findMany({
         include: {
             project: {
                 select: {
                     name: true
                 }   
-            },
-            user: true
+            }
         },
         ...options
     })
@@ -43,14 +68,8 @@ export const load = (async ({url, locals}) => {
 export const actions: Actions = {
     createBug: async ({request, locals}) => {
 
-
-        console.log("HIt");
-        
         const form = await superValidate(request, createBugSchema);
-
-        console.log(form.data);
         
-
         if(form.valid) {
             // do something with form.data
             await prisma.bug.create({

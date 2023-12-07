@@ -9,12 +9,13 @@
 	import { createBugSchema } from './schema';
 	import * as Card from "$lib/components/ui/card";
 	import {Bug, FolderGit, Calendar} from "lucide-svelte"
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import type { FormOptions } from 'formsnap';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { BugPriority, BugSeverity, BugStatus } from '@prisma/client';
     import * as Table from "$ui/table";
+  
 
     export let data: PageData;
 
@@ -40,7 +41,17 @@
 
 			
 		},
-	};
+	};  
+
+   let q: string
+
+    function handleSearch(){
+       
+        if(q !== ""){
+            goto(`?q=${q}`, {invalidateAll: true})
+        }
+    }
+    
 
     onMount(() => {
         if(shouldCreate && project){
@@ -53,7 +64,9 @@
 
 <div class="max-w-6xl w-full mx-auto my-3 flex justify-center items-center gap-4">
 	<form class="flex-1">
-		<Input placeholder="Search" />
+
+    
+		<Input placeholder="Search" bind:value={q}  on:change={handleSearch}/>
 	</form>
 
 	<Sheet.Root bind:open={sheetOpen} >
