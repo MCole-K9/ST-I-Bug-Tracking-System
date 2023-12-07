@@ -57,7 +57,7 @@ export class BugService {
     }
     static async createBug(data: CreateBugSchemaType) {
 
-        await prisma.$transaction(async(tx) => {
+        return await prisma.$transaction(async(tx) => {
             //cant use form.data because it has a default value for priority, severity, and status if not provided 
             //and it is required on history the schema
 
@@ -67,7 +67,7 @@ export class BugService {
                 },
             })
     
-            await tx.bugHistory.create({
+           let history =  await tx.bugHistory.create({
                 data: {
                     bug_id: bug.id,
                     user_id: bug.user_id,
@@ -76,32 +76,53 @@ export class BugService {
                     severity: bug.severity,
                 }
             })
+
+            return {...bug, history : {...history}}
         })
     }
 
     static async updateBug(id: string, user_id: string ,data: UpdateBugSchemaType) {
-        await prisma.$transaction(async(tx) => {
+        return await prisma.$transaction(async(tx) => {
             //cant use form.data because it has a default value for priority, severity, and status if not provided 
             //and it is required on history the schema
 
-            let bug = await tx.bug.update({
+
+
+            let bug = await tx.bug.findUniqueOrThrow({
+                where: {
+                    id: id
+                }
+            })
+
+            await tx.bugHistory.create({
+                data: {
+                    bug_id: bug.id,
+                    user_id: user_id, // this is the user that is updating the bug, provided by function param
+                    status: bug.status,
+                    priority: bug.priority,
+                    severity: bug.severity,
+                
+                },
+                
+            })
+
+            return await tx.bug.update({
                 where: {
                     id: id
                 },
                 data: {
                     ...data,
                 },
-            })
-    
-            await tx.bugHistory.create({
-                data: {
-                    bug_id: bug.id,
-                    user_id: user_id,
-                    status: bug.status,
-                    priority: bug.priority,
-                    severity: bug.severity,
+                include: {
+                    history: true,
+                    project: {
+                        select: {
+                            name: true
+                        }
+                    }
                 }
             })
+ 
         })
     }
 
