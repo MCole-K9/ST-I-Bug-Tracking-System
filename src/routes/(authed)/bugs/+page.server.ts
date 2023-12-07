@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { createBugSchema } from './schema';
 import prisma from '$server/prisma';
 import { fail } from '@sveltejs/kit';
+import type { Prisma } from '@prisma/client';
 
 export const load = (async ({url, locals, depends}) => {
 
@@ -11,7 +12,7 @@ export const load = (async ({url, locals, depends}) => {
     let project_id = url.searchParams.get("project");
     let query = url.searchParams.get("q");
 
-    let options = {
+    let options:Prisma.BugFindManyArgs = {
         where: {
            
         }
@@ -35,15 +36,12 @@ export const load = (async ({url, locals, depends}) => {
                     },
                     description: {
                         search: query
-                    }
-    
-    
+                    },
+                    
                 }
             ] 
         }
     }
-
-    console.log(options);
     
     let bugs = await prisma.bug.findMany({
         include: {
@@ -66,15 +64,34 @@ export const load = (async ({url, locals, depends}) => {
 
 
 export const actions: Actions = {
-    createBug: async ({request, locals}) => {
+    createBug: async ({request}) => {
 
         const form = await superValidate(request, createBugSchema);
         
         if(form.valid) {
             // do something with form.data
-            await prisma.bug.create({
-                data: form.data
+
+            await prisma.$transaction(async(tx) => {
+                //cant use form.data because it has a default value for priority, severity, and status if not provided 
+                //and it is required on history the schema
+
+                let bug = await tx.bug.create({
+                    data: {
+                        ...form.data,
+                    },
+                })
+        
+                await tx.bugHistory.create({
+                    data: {
+                        bug_id: bug.id,
+                        user_id: bug.user_id,
+                        status: bug.status,
+                        priority: bug.priority,
+                        severity: bug.severity,
+                    }
+                })
             })
+         
         }else{
             // do something with form.errors
             return fail(400, {form})
